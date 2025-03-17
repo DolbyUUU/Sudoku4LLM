@@ -1,3 +1,5 @@
+# Sudoku4LLM/config.py
+
 class SudokuConfig:
     @staticmethod
     def get_configs():
