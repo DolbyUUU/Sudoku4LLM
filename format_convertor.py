@@ -1,5 +1,3 @@
-# Sudoku4LLM/format_convertor.py
-
 import json
 import os
 from config import SudokuConfig  # Importing the config.py module for format options
@@ -25,14 +23,16 @@ class SudokuFormatConverter:
             exit(1)
         return puzzles
 
-    def save_to_file(self, data, filename):
-        """Save the converted data to a file."""
+    def save_to_jsonl(self, converted_puzzles, format_name):
+        """Save the converted puzzles to a JSONL file."""
         try:
             os.makedirs(self.output_path, exist_ok=True)
-            file_path = os.path.join(self.output_path, filename)
-            with open(file_path, "w") as file:
-                file.write(data)
-            print(f"Converted format saved to: {file_path}")
+            output_file = os.path.join(self.output_path, f"converted_{format_name}.jsonl")
+            with open(output_file, "w") as file:
+                for puzzle in converted_puzzles:
+                    json.dump(puzzle, file)
+                    file.write("\n")
+            print(f"Converted puzzles saved in JSONL format to: {output_file}")
         except PermissionError:
             print(f"Error: Unable to write to directory '{self.output_path}'. Check your permissions.")
             exit(1)
@@ -133,11 +133,14 @@ class SudokuFormatConverter:
 
         # Apply the selected format method to each puzzle
         for puzzle in puzzles:
-            converted_puzzles.append(format_function(puzzle))
+            converted_puzzles.append({
+                "original_puzzle": puzzle,  # Include the original puzzle for reference
+                "converted_puzzle": format_function(puzzle),  # Converted puzzle
+                "format": description  # Metadata: format name
+            })
 
-        # Save the converted puzzles into a single file
-        output_filename = f"converted_{description.replace(' ', '_').lower()}.jsonl"
-        self.save_to_file("\n\n".join(converted_puzzles), output_filename)
+        # Save all converted puzzles in JSONL format
+        self.save_to_jsonl(converted_puzzles, description.replace(" ", "_").lower())
 
 
 if __name__ == "__main__":

@@ -117,6 +117,49 @@ Follow the interactive prompts to:
 - Choose difficulty level, solution enforcement, and placeholder.
 - Save puzzles in JSONL format for training or evaluation.
 
+```plaintext
+$ python3 Sudoku4LLM/sudoku_generator.py
+
+Select Sudoku grid size:
+1. 4x4
+2. 6x6
+3. 9x9
+Enter your choice (1, 2, or 3): 2
+You've selected '6x6' Sudoku.
+
+Select difficulty level:
+- beginner: 20% missing numbers
+- easy: 33% missing numbers
+- medium: 45% missing numbers
+- hard: 55% missing numbers
+Press Enter to use the default difficulty: medium
+Enter your choice (e.g., beginner, easy, hard): medium
+You've selected 'medium' difficulty.
+
+Enforce unique solutions:
+- unique: Enforce unique solution
+- non_unique: Allow multiple solutions
+Press Enter to use the default option: unique
+Enter your choice (e.g., unique, non_unique): non_unique
+You've selected 'non_unique' for solution enforcement.
+
+Select placeholder for unknown numbers:
+- 0: 0 (Machine-readable formats)
+- .: . (Human-readable text-based grids)
+- _: _ (Visual emphasis in puzzles)
+- *: * (Visually striking representations)
+- ?: ? (Expressing uncertainty/unknowns)
+Press Enter to use the default placeholder: .
+Enter your choice (e.g., 0, ., _, *, ?): 0
+You've selected '0' as the placeholder for unknown numbers.
+
+Generating puzzle 1/100...
+Generating puzzle 2/100...
+...
+Generating puzzle 100/100...
+Puzzles saved to ./sudoku_data/6x6/jsonl/grid-6_diff-45_placeholder-0_enforce-non_unique.jsonl in JSON Lines format.
+```
+
 ### 2. **Convert Puzzles into Desired Formats**
 
 Use the `format_convertor.py` script to convert puzzles into one of 11 supported formats:
@@ -138,3 +181,25 @@ Modify `config.py` to adjust default settings, including:
 - Default placeholders and solution uniqueness.
 
 ---
+
+## 🤝 Acknowledgements
+
+We would like to thank the following contributors, projects, and resources that inspired or supported this work:
+
+- [Add acknowledgements here.]
+
+---
+
+## 📜 Citation
+
+If you use **Sudoku4LLM** in your research, please cite us:
+
+```bibtex
+@misc{Sudoku4LLM,
+  author = {Your Name},
+  title = {Sudoku4LLM: A Dataset Generator for Training and Evaluating Reasoning LLMs},
+  year = {2025},
+  url = {https://github.com/your-repo/Sudoku4LLM},
+  note = {Version 1.0}
+}
+```
