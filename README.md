@@ -36,6 +36,7 @@ Sudoku puzzles are more than just a game—they are a **rich reasoning benchmark
      - Grids can be serialized in multiple ways (e.g., cell-level, row-level, or grid-level).
      - This allows researchers to explore the **optimal input format for structured data** in LLMs.
    - Sudoku4LLM supports 11 different serialization formats, making it a versatile tool for studying structured data representation.
+   - Researchers can easily design custom serialization formats or explore new structured data representations.
 
 ### 5. **Resistance to Memorization**
    - With **infinite variability** in puzzle generation, Sudoku puzzles are highly resistant to memorization, ensuring that models are genuinely reasoning rather than recalling.
@@ -182,24 +183,16 @@ Modify `config.py` to adjust default settings, including:
 
 ---
 
-## 🤝 Acknowledgements
-
-We would like to thank the following contributors, projects, and resources that inspired or supported this work:
-
-- [Add acknowledgements here.]
-
----
-
 ## 📜 Citation
 
 If you use **Sudoku4LLM** in your research, please cite us:
 
 ```bibtex
 @misc{Sudoku4LLM,
-  author = {Your Name},
+  author = {Yu Wang},
   title = {Sudoku4LLM: A Dataset Generator for Training and Evaluating Reasoning LLMs},
   year = {2025},
-  url = {https://github.com/your-repo/Sudoku4LLM},
+  url = {https://github.com/DolbyUUU/Sudoku4LLM},
   note = {Version 1.0}
 }
 ```

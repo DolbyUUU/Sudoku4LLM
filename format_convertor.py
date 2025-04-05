@@ -1,3 +1,5 @@
+# Sudoku4LLM/format_convertor.py
+
 import json
 import os
 from config import SudokuConfig  # Importing the config.py module for format options
@@ -14,7 +16,8 @@ class SudokuFormatConverter:
         try:
             with open(self.input_jsonl, "r") as file:
                 for line in file:
-                    puzzles.append(json.loads(line)["puzzle"])
+                    puzzle_data = json.loads(line)
+                    puzzles.append(puzzle_data)
         except FileNotFoundError:
             print(f"Error: Input file '{self.input_jsonl}' not found.")
             exit(1)
@@ -105,7 +108,7 @@ class SudokuFormatConverter:
         return "\n".join(rows)
 
     def convert(self, format_choice):
-        """Convert puzzles to the selected format."""
+        """Convert puzzles to the selected format, include game_rule and directly use config."""
         puzzles = self.load_puzzles()
         converted_puzzles = []
 
@@ -132,11 +135,21 @@ class SudokuFormatConverter:
         description, format_function = format_methods[format_choice]
 
         # Apply the selected format method to each puzzle
-        for puzzle in puzzles:
+        for puzzle_data in puzzles:
+            puzzle = puzzle_data["puzzle"]
+            config = puzzle_data["config"]  # Directly use the "config" from the original data
+
+            # Add game rule based on grid size
+            grid_size = config["grid_size"]
+            game_rule = SudokuConfig.get_configs().get(f"{grid_size}x{grid_size}", {}).get("rules", "Unknown rules").strip()
+
+            # Build the converted puzzle data
             converted_puzzles.append({
-                "original_puzzle": puzzle,  # Include the original puzzle for reference
+                "original_puzzle": puzzle,  # Include the original puzzle
                 "converted_puzzle": format_function(puzzle),  # Converted puzzle
-                "format": description  # Metadata: format name
+                "format": description,  # Metadata: format name
+                "game_rule": game_rule,  # Game rule
+                "config": config  # Directly include the original config
             })
 
         # Save all converted puzzles in JSONL format

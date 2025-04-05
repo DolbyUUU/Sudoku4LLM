@@ -109,14 +109,28 @@ class SudokuGenerator:
         return self.grid  # Return the puzzle
 
 
-def save_puzzles_to_jsonl(puzzles, path, filename):
+def save_puzzles_to_jsonl(puzzles, path, filename, config, settings):
+    """
+    Save puzzles to a JSONL file, excluding unnecessary internal details like sub_grid_size.
+    """
     # Ensure the directory exists
     os.makedirs(path, exist_ok=True)
     file_path = os.path.join(path, filename)
 
+    # Extract settings for easier readability
+    percent_missing, enforce_unique, placeholder = settings
+
     with open(file_path, "w") as file:
         for puzzle in puzzles:
-            json.dump({"puzzle": puzzle}, file)
+            json.dump({
+                "puzzle": puzzle,
+                "config": {
+                    "grid_size": config["grid_size"],  # Retain grid size
+                    "difficulty": percent_missing,     # Retain difficulty as percentage
+                    "enforce_unique": enforce_unique,  # Retain uniqueness enforcement
+                    "placeholder": placeholder         # Retain placeholder
+                }
+            }, file)
             file.write("\n")
     print(f"Puzzles saved to {file_path} in JSON Lines format.")
 
@@ -226,7 +240,8 @@ def generate_sudoku_puzzles(num_puzzles, config, settings, output_file):
         puzzle = generator.generate_puzzle(percent_missing)
         puzzles.append(puzzle)
 
-    save_puzzles_to_jsonl(puzzles, config["base_output_path"], output_file)
+    # Pass config and settings to save_puzzles_to_jsonl
+    save_puzzles_to_jsonl(puzzles, config["base_output_path"], output_file, config, settings)
 
 
 if __name__ == "__main__":
